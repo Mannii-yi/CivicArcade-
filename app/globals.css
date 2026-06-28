@@ -1,26 +1,90 @@
-@import "tailwindcss";
+/* ── Fonts — MUST be first ── */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0f;
+  --foreground: #39FF14;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #0a0a0f;
+  color: #39FF14;
+  overflow: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── MapLibre ── */
+.maplibregl-canvas    { outline: none; }
+.maplibregl-map       { height: 100% !important; }
+.maplibregl-ctrl-attrib,
+.maplibregl-ctrl-logo { display: none !important; }
+
+/* ── Player marker ── */
+.player-dot {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #39FF14;
+  box-shadow: 0 0 8px #39FF14, 0 0 20px #39FF1460;
+}
+.player-ping {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid #39FF14;
+  animation: ping 1.5s ease-out infinite;
+  opacity: 0;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Keyframes ── */
+@keyframes ping {
+  0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(2);   opacity: 0; }
 }
+@keyframes scanline {
+  0%   { top: -2px; }
+  100% { top: 100vh; }
+}
+@keyframes flicker {
+  0%, 89%, 91%, 93%, 100% { opacity: 1; }
+  90%, 92%                 { opacity: 0.4; }
+}
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+@keyframes borderFlash {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+@keyframes xpPop {
+  0%   { transform: translateY(0)     scale(1);   opacity: 1; }
+  100% { transform: translateY(-40px) scale(1.3); opacity: 0; }
+}
+
+/* ── XP float popup ── */
+.xp-pop {
+  position: fixed;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: #39FF14;
+  text-shadow: 0 0 10px #39FF14;
+  pointer-events: none;
+  animation: xpPop 1.2s ease-out forwards;
+  z-index: 200;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(57,255,20,0.3); border-radius: 2px; }
