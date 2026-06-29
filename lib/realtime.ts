@@ -4,7 +4,7 @@ import type { Quest } from "@/types";
 export function subscribeToQuests(
   onInsert: (quest: Quest) => void,
   onUpdate: (quest: Quest) => void,
-) {
+): () => void {
   const channel = supabase
     .channel("quests-realtime")
     .on(
@@ -19,5 +19,8 @@ export function subscribeToQuests(
     )
     .subscribe();
 
-  return () => supabase.removeChannel(channel);
+  // Explicitly typed as sync () => void so TS doesn't complain
+  return () => {
+    supabase.removeChannel(channel);
+  };
 }
